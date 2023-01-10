@@ -126,6 +126,16 @@ class SimplebluePlugin : FlutterPlugin,
                     (args["uuid"] as? String)?.let { uuid ->
                         bluetoothAdapter?.getRemoteDevice(uuid)?.let {
                             if (connectToDevice(it)) {
+                                eventSink?.success(
+                                    mapOf(
+                                        "type" to "connection",
+                                        "data" to mapOf(
+                                            "event" to "connected",
+                                            "device" to deviceToJson(it, true)
+                                        )
+                                    )
+                                )
+
                                 result.success(0)
                             } else {
                                 result.success(-1)
